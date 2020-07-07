@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup Label="Build">
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <AssemblyName>eventstream</AssemblyName>
+  </PropertyGroup>
+
+  <PropertyGroup Label="NuGet">
+    <Description>
+      A dotnet global tool to connect and receive streaming events pushed from EventGrid.
+
+      Usage: eventstream [Url]
+    </Description>
+    <Authors>kzu, Devlooped</Authors>
+
+    <PackageId>dotnet-eventstream</PackageId>
+    <ToolCommandName>eventstream</ToolCommandName>
+    <PackAsTool>true</PackAsTool>
+
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/devlooped/eventstream</PackageProjectUrl>
+    <PackageIcon>icon-128.png</PackageIcon>
+    <PackageTags>dotnet events EventGrid</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="GitInfo" Version="2.0.20" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="3.1.5" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="icon-128.png" CopyToOutputDirectory="PreserveNewest" Pack="true" PackagePath="%(Filename)%(Extension)" />
+  </ItemGroup>
+
+</Project>

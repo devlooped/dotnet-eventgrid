@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "EventStream.Tool": {
+      "commandName": "Project",
+      "commandLineArgs": "http://localhost:7071/?accessKey=42"
+    }
+  }
+}
