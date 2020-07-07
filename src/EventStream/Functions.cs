@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -60,8 +61,8 @@ namespace Devlooped
                 {
                     subject = "Unknown",
                     topic = "Unknown",
-                    eventType = "Unknown", 
-                    eventTime = DateTime.UtcNow, 
+                    eventType = "Unknown",
+                    eventTime = DateTime.UtcNow,
                     data = message,
                     dataVersion = typeof(Functions).Assembly.GetName().Version?.ToString(3)
                 }, settings)}
@@ -71,10 +72,23 @@ namespace Devlooped
         public Task EventAsync(
             [EventGridTrigger] EventGridEvent e,
             [SignalR(HubName = "events")] IAsyncCollector<SignalRMessage> messages)
-            => messages.AddAsync(new SignalRMessage
+        {
+            // Simplify topic which is otherwise unwieldy with useless info
+            var parts = new List<string>(e.Topic.Split('/'));
+            var domains = parts.IndexOf("domains");
+            var topics = parts.IndexOf("topics");
+
+            if (domains != -1 && topics != -1)
+            {
+                var values = parts.ToArray();
+                e.Topic = string.Join('/', values[(domains + 1)..topics]) + "/" + string.Join('/', values[(topics + 1)..]);
+            }
+
+            return messages.AddAsync(new SignalRMessage
             {
                 Target = "event",
                 Arguments = new[] { JsonConvert.SerializeObject(e, settings) }
             });
+        }
     }
 }
