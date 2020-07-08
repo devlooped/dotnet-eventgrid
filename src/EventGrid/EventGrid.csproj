@@ -8,12 +8,13 @@
 
   <PropertyGroup Label="NuGet">
     <Description>
-A dotnet global tool to connect and receive streaming events pushed from EventGrid.
+A dotnet global tool to connect to Azure SignalR and receive streaming 
+events pushed to it from Azure EventGrid.
 
 Usage: eventgrid [function-app-url] -[property]* +[property:minimatch]*
-   -property             Don't show property in rendered output.
+   -property                    Don't show property in rendered output.
    +property:minimatch   Filter entries where the specified property 
-                            matches the given minimatch expression.
+                                         matches the given minimatch expression.
 
 Example: eventgrid https://mygrid.azurewebsites.net/?key=1234 -id +topic:System/** +event:*Created
     </Description>
