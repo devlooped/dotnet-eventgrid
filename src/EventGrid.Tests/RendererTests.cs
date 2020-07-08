@@ -12,7 +12,7 @@ namespace Devlooped
         [Fact]
         public void IgnoreProperties()
         {
-            var e = new EventGridEvent(Guid.NewGuid().ToString(), "Subject", "{ \"Value\": 42 }", "EventType", DateTime.UtcNow, "1.0", "Topic");
+            var e = new PathEventGridEvent(Guid.NewGuid().ToString(), "Subject", "{ \"Value\": 42 }", "EventType", DateTime.UtcNow, "1.0", "Topic");
 
             var renderer = Renderer.Parse("-id", "-eventtime", "-DataVersion");
 
@@ -27,7 +27,7 @@ namespace Devlooped
         [Theory]
         public void DefaultIgnoredProperty(string property)
         {
-            var e = new EventGridEvent(Guid.NewGuid().ToString(), "Subject", "{ \"Value\": 42 }", "EventType", DateTime.UtcNow, "1.0", "Topic", "1.0");
+            var e = new PathEventGridEvent(Guid.NewGuid().ToString(), "UserId", "{ \"Value\": 42 }", "LoginEvent", DateTime.UtcNow, "1.0", "ShoppingCart", "1.0");
 
             var renderer = Renderer.Parse();
 
@@ -40,7 +40,7 @@ namespace Devlooped
         [Theory]
         public void IncludeAllIgnoredProperty(string property)
         {
-            var e = new EventGridEvent(Guid.NewGuid().ToString(), "Subject", "{ \"Value\": 42 }", "EventType", DateTime.UtcNow, "1.0", "Topic", "1.0");
+            var e = new PathEventGridEvent(Guid.NewGuid().ToString(), "UserId", "{ \"Value\": 42 }", "LoginEvent", DateTime.UtcNow, "1.0", "ShoppingCart", "1.0");
 
             var renderer = Renderer.Parse("+all");
 
