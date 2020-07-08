@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Azure.EventGrid.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using Newtonsoft.Json.Serialization;
 using Serilog;
 
 namespace Devlooped
@@ -30,11 +29,18 @@ namespace Devlooped
 
         static async Task<int> Main(string[] args)
         {
-            if (args.Length == 0)
+            if (args.Length == 0 || args[0] == "-?" || 
+                args[0] == "-h" || args[0] == "--help")
             {
-                Console.WriteLine("Usage: eventstream [url]");
-                return -1;
+                Console.WriteLine("Usage: eventstream [url] -[property]* +[property:minimatch]*");
+                Console.WriteLine("      -property             Don't show property in rendered output.");
+                Console.WriteLine("      +property:minimatch   Filter entries where the specified property ");
+                Console.WriteLine("                            matches the given minimatch expression.");
+                return 0;
             }
+
+            var filter = Filter.Parse(args);
+            var renderer = Renderer.Parse(args);
 
             var connection = new HubConnectionBuilder()
                 .WithUrl(args[0])
@@ -57,26 +63,12 @@ namespace Devlooped
                 try
                 {
                     var evt = JsonConvert.DeserializeObject<EventGridEvent>(e, settings);
-                    try
-                    {
-                        // Try unpacking the data so it renders better.
-                        evt.Data = JsonConvert.DeserializeObject((string)evt.Data, settings);
-                    }
-                    catch { }
-
-                    logger.Information("{Message}", JsonConvert.SerializeObject(new
-                    {
-                        id = evt.Id,
-                        eventTime = evt.EventTime,
-                        eventType = evt.EventType,
-                        subject = evt.Subject,
-                        topic = evt.Topic,
-                        data = evt.Data
-                    }, settings));
+                    if (filter.ShouldInclude(evt))
+                        logger.Information("{event}", renderer.Render(evt));
                 }
                 catch 
                 {
-                    logger.Information("{Message}", e);
+                    logger.Information("{event}", e);
                 }
             });
 

@@ -3,19 +3,20 @@
   <PropertyGroup Label="Build">
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <AssemblyName>eventstream</AssemblyName>
+    <AssemblyName>eventgrid</AssemblyName>
   </PropertyGroup>
 
   <PropertyGroup Label="NuGet">
     <Description>
       A dotnet global tool to connect and receive streaming events pushed from EventGrid.
 
-      Usage: eventstream [Url]
+      Usage: eventgrid [url] -[skip-property] +[filter-property:minimatch]
+      Exapmle: eventgrid https://eventgrid.azurewebsites.net/?accessKey=1234 -id -dataversion +topic:System* +eventType:*
     </Description>
     <Authors>kzu, Devlooped</Authors>
 
-    <PackageId>dotnet-eventstream</PackageId>
-    <ToolCommandName>eventstream</ToolCommandName>
+    <PackageId>dotnet-eventgrid</PackageId>
+    <ToolCommandName>eventgrid</ToolCommandName>
     <PackAsTool>true</PackAsTool>
 
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
@@ -31,6 +32,8 @@
     <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
     <PackageReference Include="Microsoft.Azure.EventGrid" Version="1.3.0" />
+    <PackageReference Include="Minimatch" Version="2.0.0" />
+    <PackageReference Include="NETStandard.Library" Version="2.0.3" />
   </ItemGroup>
 
   <ItemGroup>

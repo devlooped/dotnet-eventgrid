@@ -17,7 +17,7 @@ namespace Devlooped
 {
     public class Functions
     {
-        JsonSerializerSettings settings = new JsonSerializerSettings
+        static readonly JsonSerializerSettings settings = new JsonSerializerSettings
         {
             Converters =
             {
@@ -43,6 +43,11 @@ namespace Devlooped
                 return new OkObjectResult(connectionInfo);
 
             var accessKey = req.Query["accessKey"];
+            if (StringValues.IsNullOrEmpty(accessKey))
+                accessKey = req.Query["key"];
+            if (StringValues.IsNullOrEmpty(accessKey))
+                accessKey = req.Query["k"];
+
             if (StringValues.IsNullOrEmpty(accessKey) ||
                 !StringValues.Equals(expectedKey, accessKey))
                 return new UnauthorizedResult();
@@ -50,30 +55,12 @@ namespace Devlooped
             return new OkObjectResult(connectionInfo);
         }
 
-        [FunctionName("event")]
-        public Task PostEventAsync(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post")] string message,
-            [SignalR(HubName = "events")] IAsyncCollector<SignalRMessage> messages)
-            => messages.AddAsync(new SignalRMessage
-            {
-                Target = "event",
-                Arguments = new[] { JsonConvert.SerializeObject(new
-                {
-                    subject = "Unknown",
-                    topic = "Unknown",
-                    eventType = "Unknown",
-                    eventTime = DateTime.UtcNow,
-                    data = message,
-                    dataVersion = typeof(Functions).Assembly.GetName().Version?.ToString(3)
-                }, settings)}
-            });
-
         [FunctionName("publish")]
         public Task EventAsync(
             [EventGridTrigger] EventGridEvent e,
             [SignalR(HubName = "events")] IAsyncCollector<SignalRMessage> messages)
         {
-            // Simplify topic which is otherwise unwieldy with useless info
+            // Simplify topic which is otherwise unwieldy. We just serialize it as domain/topic
             var parts = new List<string>(e.Topic.Split('/'));
             var domains = parts.IndexOf("domains");
             var topics = parts.IndexOf("topics");
