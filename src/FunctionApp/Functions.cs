@@ -60,17 +60,6 @@ namespace Devlooped
             [EventGridTrigger] EventGridEvent e,
             [SignalR(HubName = "events")] IAsyncCollector<SignalRMessage> messages)
         {
-            // Simplify topic which is otherwise unwieldy. We just serialize it as domain/topic
-            var parts = new List<string>(e.Topic.Split('/'));
-            var domains = parts.IndexOf("domains");
-            var topics = parts.IndexOf("topics");
-
-            if (domains != -1 && topics != -1)
-            {
-                var values = parts.ToArray();
-                e.Topic = string.Join('/', values[(domains + 1)..topics]) + "/" + string.Join('/', values[(topics + 1)..]);
-            }
-
             return messages.AddAsync(new SignalRMessage
             {
                 Target = "event",

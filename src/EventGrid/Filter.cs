@@ -11,12 +11,12 @@ namespace Devlooped
 {
     public class Filter
     {
-        List<Func<EventGridEvent, bool>> filters = new List<Func<EventGridEvent, bool>>();
+        List<Func<PathEventGridEvent, bool>> filters = new List<Func<PathEventGridEvent, bool>>();
         ConcurrentDictionary<string, List<Minimatcher>> matchers = new ConcurrentDictionary<string, List<Minimatcher>>();
 
         public static Filter Parse(params string[] args)
         {
-            var props = typeof(EventGridEvent).GetProperties()
+            var props = typeof(PathEventGridEvent).GetProperties()
                 .ToDictionary(prop => prop.Name, StringComparer.OrdinalIgnoreCase);
 
             var matchers = new List<(PropertyInfo, Minimatcher)>();
@@ -24,8 +24,7 @@ namespace Devlooped
 
             foreach (var filter in args
                 .Where(x => x.StartsWith('+'))
-                // Consider event a shortcut for EventType since it's going to be quite common.
-                .Select(s => s.Replace("+event:", "+EventType:", StringComparison.OrdinalIgnoreCase).Substring(1).Split(new [] { ':', '=' }))
+                .Select(s => s.TrimStart('+').Split(new [] { ':', '=' }))
                 .Where(pair => pair.Length == 2))
             {
                 if (!props.TryGetValue(filter[0], out var prop))
@@ -43,23 +42,23 @@ namespace Devlooped
         Filter(List<(PropertyInfo property, Minimatcher matcher)> matchers)
         {
             var method = GetType().GetMethod(nameof(Matches), BindingFlags.Instance | BindingFlags.NonPublic);
-            var e = Expression.Parameter(typeof(EventGridEvent), "e");
+            var e = Expression.Parameter(typeof(PathEventGridEvent), "e");
 
             foreach (var pair in matchers)
             {
                 this.matchers.GetOrAdd(pair.property.Name, _ => new List<Minimatcher>()).Add(pair.matcher);
 
-                filters.Add(Expression.Lambda<Func<EventGridEvent, bool>>(
+                filters.Add(Expression.Lambda<Func<PathEventGridEvent, bool>>(
                     Expression.Call(
                         Expression.Constant(this),
                         method,
                         Expression.Constant(pair.property.Name),
-                        Expression.Property(e, pair.property.GetGetMethod())),
+                        Expression.Property(e, pair.property)),
                     e).Compile());
             }
         }
 
-        public bool ShouldInclude(EventGridEvent e) => filters.All(x => x.Invoke(e));
+        public bool ShouldInclude(PathEventGridEvent e) => filters.All(x => x.Invoke(e));
 
         bool Matches(string property, string value) => matchers.GetOrAdd(property, _ => new List<Minimatcher>()).Any(m => m.IsMatch(value));
     }

@@ -32,10 +32,24 @@ namespace Devlooped
             if (args.Length == 0 || args[0] == "-?" || 
                 args[0] == "-h" || args[0] == "--help")
             {
-                Console.WriteLine("Usage: eventstream [url] -[property]* +[property:minimatch]*");
-                Console.WriteLine("      -property             Don't show property in rendered output.");
-                Console.WriteLine("      +property:minimatch   Filter entries where the specified property ");
-                Console.WriteLine("                            matches the given minimatch expression.");
+                Console.WriteLine("Usage: eventstream [url] [--] -[property]* +[property=minimatch]*");
+                Console.WriteLine("      +all                    Render all properties");
+                Console.WriteLine("      -property               Exclude a property");
+                Console.WriteLine("      +property[=minimatch]   Include a property, optionally filtering ");
+                Console.WriteLine("                              with the given the minimatch expression.");
+                Console.WriteLine();
+                Console.WriteLine("Examples:");
+                Console.WriteLine("- Include all event properties, for topic ending in 'System'");
+                Console.WriteLine("      eventstream https://mygrid.com +all +topic=**/System");
+                Console.WriteLine();
+                Console.WriteLine("- Exclude data property and filter for specific event types");
+                Console.WriteLine("      eventstream https://mygrid.com -data +eventType=Login");
+                Console.WriteLine();
+                Console.WriteLine("- Filter using synthetized path property '{domain}/{topic}/{subject}/{eventType}'");
+                Console.WriteLine("      eventstream https://mygrid.com +path=MyApp/**/Login");
+                Console.WriteLine();
+                Console.WriteLine("- Filter using synthetized path property for a specific event and user (subject)");
+                Console.WriteLine("      eventstream https://mygrid.com +path=MyApp/*/1bQUI/Login");
                 return 0;
             }
 
@@ -62,7 +76,7 @@ namespace Devlooped
             {
                 try
                 {
-                    var evt = JsonConvert.DeserializeObject<EventGridEvent>(e, settings);
+                    var evt = JsonConvert.DeserializeObject<PathEventGridEvent>(e, settings);
                     if (filter.ShouldInclude(evt))
                         logger.Information("{event}", renderer.Render(evt));
                 }

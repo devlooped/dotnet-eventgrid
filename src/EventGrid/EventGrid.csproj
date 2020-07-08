@@ -11,12 +11,24 @@
 A dotnet global tool to connect to Azure SignalR and receive streaming 
 events pushed to it from Azure EventGrid.
 
-Usage: eventgrid [function-app-url] -[property]* +[property:minimatch]*
-   -property                    Don't show property in rendered output.
-   +property:minimatch   Filter entries where the specified property 
-                                         matches the given minimatch expression.
+Usage: eventstream [url] [--] -[property]* +[property=minimatch]*
+      +all                    Render all properties
+      -property               Exclude a property
+      +property[=minimatch]   Include a property, optionally filtering
+                              with the given the minimatch expression.
 
-Example: eventgrid https://mygrid.azurewebsites.net/?key=1234 -id +topic:System/** +event:*Created
+Examples:
+- Include all event properties, for topic ending in 'System'
+      eventstream https://mygrid.com +all +topic=**/System
+
+- Exclude data property and filter for specific event types
+      eventstream https://mygrid.com -data +eventType=Login
+
+- Filter using synthetized path property '{domain}/{topic}/{subject}/{eventType}'
+      eventstream https://mygrid.com +path=MyApp/**/Login
+
+- Filter using synthetized path property for a specific event and user (subject)
+      eventstream https://mygrid.com +path=MyApp/*/1bQUI/Login
     </Description>
     <Authors>kzu, Devlooped</Authors>
 

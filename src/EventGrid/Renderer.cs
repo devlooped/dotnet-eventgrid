@@ -12,13 +12,27 @@ namespace Devlooped
 {
     public class Renderer
     {
-        readonly JsonSerializerSettings settings;
-
-        public Renderer(HashSet<string> ignored)
+        /// <summary>
+        /// Properties excluded by default, unless explicitly opted-in via +all
+        /// </summary>
+        public static HashSet<string> DefaultExcluded { get; } = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
         {
+            nameof(EventGridEvent.EventType),
+            nameof(EventGridEvent.Subject),
+            nameof(EventGridEvent.Topic),
+            nameof(EventGridEvent.DataVersion),
+            nameof(EventGridEvent.MetadataVersion),
+        };
+
+        readonly JsonSerializerSettings settings;
+        readonly HashSet<string> excluded;
+
+        public Renderer(HashSet<string> excluded)
+        {
+            this.excluded = excluded;
             settings = new JsonSerializerSettings
             {
-                ContractResolver = new IgnoredPropertiesResolver(ignored),
+                ContractResolver = new IgnoredPropertiesResolver(excluded),
                 Converters =
                 {
                     new IsoDateTimeConverter
@@ -36,25 +50,32 @@ namespace Devlooped
 
         public static Renderer Parse(params string[] args)
         {
-            var props = typeof(EventGridEvent).GetProperties()
-                .ToDictionary(prop => prop.Name, StringComparer.OrdinalIgnoreCase);
+            HashSet<string> excluded;
 
-            var excluded = new HashSet<string>();
+            if (!args.Any(s => "+all".Equals(s, StringComparison.OrdinalIgnoreCase)))
+                excluded = DefaultExcluded;
+            else
+                excluded = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+            foreach (var include in args
+                .Where(x => x.StartsWith('+'))
+                .Select(s => s.TrimStart('+').Split(new[] { ':', '=' })))
+            {
+                excluded.Remove(include[0]);
+            }
 
             foreach (var exclude in args
                 .Where(s => s.StartsWith('-'))
-                .Select(s => s.Substring(1)))
+                .Select(s => s.TrimStart('-'))
+                .Where(s => s.Length > 0))
             {
-                if (!props.TryGetValue(exclude, out var prop))
-                    throw new ArgumentException($"Property '{exclude}' does not exist in {nameof(EventGridEvent)}. Cannot apply '-{exclude}'.", nameof(args));
-
-                excluded.Add(prop.Name);
+                excluded.Add(exclude);
             }
 
             return new Renderer(excluded);
         }
 
-        public string Render(EventGridEvent e)
+        public string Render(PathEventGridEvent e)
         {
             // First attempt to convert a string Data property into a proper Json object
             // for improved rendering.
@@ -67,7 +88,21 @@ namespace Devlooped
                 catch { }
             }
 
-            return JsonConvert.SerializeObject(e, settings);
+            // Define new anonymous object to control ordering of properties to 
+            // make them easier to visualize in the default configuration. Data 
+            // should typically go last, for example.
+            return JsonConvert.SerializeObject(new
+            {
+                id = e.Id,
+                eventTime = e.EventTime,
+                eventType = e.EventType,
+                path = e.Path,
+                subject = e.Subject,
+                topic = e.Topic,
+                dataVersion = e.DataVersion,
+                metadataVersion = e.MetadataVersion,
+                data = e.Data
+            }, settings);
         }
 
         class IgnoredPropertiesResolver : DefaultContractResolver
@@ -80,8 +115,7 @@ namespace Devlooped
             {
                 var property = base.CreateProperty(member, serialization);
 
-                if (property.DeclaringType == typeof(EventGridEvent) && 
-                    ignored.Contains(member.Name))
+                if (ignored.Contains(property.PropertyName))
                 {
                     property.ShouldSerialize = _ => false;
                     property.Ignored = true;
