@@ -15,6 +15,7 @@ namespace Devlooped
         [InlineData("+eventType:*", "", "FooBar", "AnyEvent")]
         [InlineData("+topic:**/Bar", "Subject", "Topic/Foo/Bar", "Event")]
         [InlineData("+topic:**/Bar/**", "Subject", "Topic/Foo/Bar/Baz/Suffix", "Event")]
+        [InlineData("+topic:** +event:**", "Subject", "Topic/Foo/Bar/Baz/Suffix", "My.Event")]
         [Theory]
         public void Matches(string args, string subject, string topic, string eventType)
         {

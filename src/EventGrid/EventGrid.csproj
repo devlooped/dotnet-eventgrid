@@ -8,10 +8,14 @@
 
   <PropertyGroup Label="NuGet">
     <Description>
-      A dotnet global tool to connect and receive streaming events pushed from EventGrid.
+A dotnet global tool to connect and receive streaming events pushed from EventGrid.
 
-      Usage: eventgrid [url] -[skip-property] +[filter-property:minimatch]
-      Exapmle: eventgrid https://eventgrid.azurewebsites.net/?accessKey=1234 -id -dataversion +topic:System* +eventType:*
+Usage: eventgrid [function-app-url] -[property]* +[property:minimatch]*
+      -property             Don't show property in rendered output.
+      +property:minimatch   Filter entries where the specified property 
+                            matches the given minimatch expression.
+
+Example: eventgrid https://mygrid.azurewebsites.net/?key=1234 -id +topic:System/** +event:*Created
     </Description>
     <Authors>kzu, Devlooped</Authors>
 
