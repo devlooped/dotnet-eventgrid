@@ -1,4 +1,4 @@
-![Icon](https://raw.github.com/devlooped/eventgrid/master/img/32.png) EventGrid Tool
+﻿![Icon](https://raw.github.com/devlooped/eventgrid/master/img/32.png) EventGrid Tool
 ============
 
 An Azure Function app with an EventGrid-trigger function that forwards events 
@@ -7,7 +7,16 @@ connect to it and receive the streaming events in real-time.
 
 ![EventGrid tool in action](img/eventgrid.gif)
 
-## deploy
+## Why
+
+I find the [Azure EventGrid Viewer](https://github.com/Azure-Samples/azure-event-grid-viewer) 
+quite lacking and stagnating, it's [just a sample after all](https://docs.microsoft.com/en-us/samples/azure-samples/azure-event-grid-viewer/azure-event-grid-viewer/).
+Also, I'm much more into [dotnet global tools](https://docs.microsoft.com/en-us/dotnet/core/tools/global-tools) 
+than web pages, having created a bunch of others like [dotnet-vs](https://github.com/kzu/dotnet-vs), 
+[guit](https://github.com/kzu/guit), [dotnet-file](https://github.com/kzu/dotnet-file) and 
+[dotnet-config](https://github.com/kzu/dotnet-config) ¯\_(ツ)_/¯
+
+## Deploy
 
 The dotnet global tool `eventgrid` connects to a SignalR service that broadcasts events with a 
 specific format (basically, just JSON-serialized [EventGridEvent](https://docs.microsoft.com/en-us/dotnet/api/microsoft.azure.eventgrid.models.eventgridevent?view=azure-dotnet) 
@@ -62,7 +71,7 @@ Instructions to deploy the cloud pieces on your own Azure subscription:
     > ![Subscription Endpoint](img/subscription.png)
 
 
-## install
+## Install
 
 Now you can install the dotnet tool that connects to your cloud infrastructure:
 
@@ -77,7 +86,7 @@ dotnet tool update -g dotnet-eventgrid
 ```
 
 
-## usage
+## Usage
 
 ```
 Usage: eventstream [url] [--] -[property]* +[property=minimatch]*
@@ -112,7 +121,7 @@ simpler format `{domain}/{topic}/{subject}/{eventType}`, which makes filtering
 with the [minimatch](https://github.com/isaacs/minimatch) format much more 
 convenient.
 
-## testing events
+## Testing events
 
 Pushing test events to EventGrid is quite simple. Provided you have a package 
 reference to `Microsoft.Azure.EventGrid`, you can use the following snippet 
