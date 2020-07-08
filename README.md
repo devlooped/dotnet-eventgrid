@@ -5,6 +5,7 @@ An Azure Function app with an EventGrid-trigger function that forwards events
 to an Azure SignalR service, and an accompanying `dotnet` global tool to 
 connect to it and receive the streaming events in real-time.
 
+![EventGrid tool in action](eventgrid.gif)
 
 ## install
 
