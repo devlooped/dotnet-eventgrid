@@ -11,8 +11,8 @@
 A dotnet global tool to connect and receive streaming events pushed from EventGrid.
 
 Usage: eventgrid [function-app-url] -[property]* +[property:minimatch]*
-      -property             Don't show property in rendered output.
-      +property:minimatch   Filter entries where the specified property 
+   -property             Don't show property in rendered output.
+   +property:minimatch   Filter entries where the specified property 
                             matches the given minimatch expression.
 
 Example: eventgrid https://mygrid.azurewebsites.net/?key=1234 -id +topic:System/** +event:*Created
@@ -25,9 +25,9 @@ Example: eventgrid https://mygrid.azurewebsites.net/?key=1234 -id +topic:System/
 
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/devlooped/eventstream</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/devlooped/eventgrid</PackageProjectUrl>
     <PackageIcon>icon-128.png</PackageIcon>
-    <PackageTags>dotnet events EventGrid</PackageTags>
+    <PackageTags>dotnet tool events EventGrid</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
