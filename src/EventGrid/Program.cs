@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Azure.EventGrid.Models;
@@ -70,7 +71,7 @@ namespace Devlooped
 
             connection.Closed += arg => { logger.Error(arg, "Closed"); return Task.CompletedTask; };
             connection.Reconnected += arg => { logger.Information("Reconnected"); return Task.CompletedTask; };
-            connection.Reconnecting += arg => { logger.Error(arg, "Reconnecting"); return Task.CompletedTask; };
+            connection.Reconnecting += arg => { logger.Error("Reconnecting: {Message}", args.FirstOrDefault()); return Task.CompletedTask; };
 
             connection.On<string>("event", e =>
             {
