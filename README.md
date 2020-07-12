@@ -129,7 +129,7 @@ of C# (for example in the most excelent [LINQPad](https://www.linqpad.net/) tool
 to push some events:
 
 ```csharp
-var domain = "YOUR_EVENT_GRID_DOMAIN_ENDPOINT";                         // From the Overview pane
+var domain = "YOUR_EVENT_GRID_DOMAIN_ENDPOINT_HOSTNAME";                // From the Overview pane
 var credentials = new TopicCredentials("YOUR_EVENT_GRID_ACCESS_KEY");   // From Access keys pane
 
 var events = new List<EventGridEvent>
