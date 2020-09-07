@@ -32,8 +32,25 @@ namespace Devlooped
 
         static async Task<int> Main(string[] args)
         {
-            if (args.Length == 0 || args[0] == "-?" || 
-                args[0] == "-h" || args[0] == "--help")
+            var config = Config.Build();
+            var url = config.GetString("eventgrid", "url");
+
+            var argList = new List<string>();
+            foreach (var include in config.GetAll("eventgrid", "filter")
+                .Concat(config.GetAll("eventgrid", "include"))
+                .Where(x => !string.IsNullOrEmpty(x.RawValue)))
+            {
+                argList.Add("+" + include.RawValue!.TrimStart('+'));
+            }
+            foreach (var exclude in config.GetAll("eventgrid", "exclude").Where(x => !string.IsNullOrEmpty(x.RawValue)))
+            {
+                argList.Add("-" + exclude.RawValue!.TrimStart('-'));
+            }
+
+            if ((args.Length == 0 && url == null) || 
+                args[0] == "-?" || 
+                args[0] == "-h" || 
+                args[0] == "--help")
             {
                 Console.WriteLine("Usage: eventgrid [url] -[property]* +[property[=minimatch]]*");
                 Console.WriteLine("      +all                    Render all properties");
@@ -58,19 +75,7 @@ namespace Devlooped
                 return 0;
             }
 
-            var config = Config.Build();
-            var argList = new List<string>(args);
-
-            foreach (var include in config.GetAll("eventgrid", "filter")
-                .Concat(config.GetAll("eventgrid", "include"))
-                .Where(x => !string.IsNullOrEmpty(x.RawValue)))
-            {
-                argList.Add("+" + include.RawValue!.TrimStart('+'));
-            }
-            foreach (var exclude in config.GetAll("eventgrid", "exclude").Where(x => !string.IsNullOrEmpty(x.RawValue)))
-            {
-                argList.Add("-" + exclude.RawValue!.TrimStart('-'));
-            }
+            argList.AddRange(args);
 
             var filter = Filter.Parse(argList);
             var renderer = Renderer.Parse(argList);
@@ -79,8 +84,19 @@ namespace Devlooped
             Console.WriteLine(renderer.ToString());
             Console.WriteLine();
 
+            // CLI-provided URL should override config provided one
+            if (Uri.TryCreate(args[0], UriKind.Absolute, out var uri))
+                url = args[0];
+
+            if (url == null)
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("Valid Url must be provided via command line arguments or .netconfig");
+                return -1;
+            }
+
             var connection = new HubConnectionBuilder()
-                .WithUrl(args[0])
+                .WithUrl(url)
                 .WithAutomaticReconnect()
                 .Build();
 
@@ -120,7 +136,6 @@ namespace Devlooped
                 logger.Error(e, "Error: {Error}");
                 return 0;
             }
-
         }
     }
 }

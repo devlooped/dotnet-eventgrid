@@ -1,4 +1,4 @@
-﻿![Icon](https://raw.github.com/devlooped/eventgrid/master/img/32.png) EventGrid Tool
+﻿![Icon](https://raw.github.com/kzu/dotnet-eventgrid/master/img/32.png) EventGrid Tool
 ============
 
 An Azure Function app with an EventGrid-trigger function that forwards events 
@@ -114,6 +114,8 @@ arguments:
 
 ```gitconfig
 [eventgrid]
+    url = https://events.mygrid.com
+
     # filters that events must pass to be rendered
     filter = path=MyApp/**/Login
     filter = eventType=*System*
