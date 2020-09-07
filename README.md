@@ -89,7 +89,7 @@ dotnet tool update -g dotnet-eventgrid
 ## Usage
 
 ```
-Usage: eventstream [url] [--] -[property]* +[property=minimatch]*
+Usage: eventgrid [url] -[property]* +[property[=minimatch]]*
       +all                    Render all properties
       -property               Exclude a property
       +property[=minimatch]   Include a property, optionally filtering
@@ -107,6 +107,23 @@ Examples:
 
 - Filter using synthetized path property for a specific event and user (subject)
       eventstream https://mygrid.com +path=MyApp/*/1bQUI/Login
+```
+
+*eventgrid* also supports [.netconfig](https://dotnetconfig.org) for configuring 
+arguments:
+
+```gitconfig
+[eventgrid]
+    # filters that events must pass to be rendered
+    filter = path=MyApp/**/Login
+    filter = eventType=*System*
+
+    # properties to include in the event rendering
+    include = EventType
+    include = Subject
+
+    # properties to exclude from event rendering
+    exclude = data
 ```
 
 The `url` is the address of your deployed function app, which can optionally 

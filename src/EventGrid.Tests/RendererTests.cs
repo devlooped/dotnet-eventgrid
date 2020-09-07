@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Azure.EventGrid.Models;
 using Xunit;
 
 namespace Devlooped

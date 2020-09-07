@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using Microsoft.Azure.EventGrid.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -26,10 +27,12 @@ namespace Devlooped
 
         readonly JsonSerializerSettings settings;
         readonly HashSet<string> excluded;
+        readonly HashSet<string> included;
 
-        public Renderer(HashSet<string> excluded)
+        public Renderer(HashSet<string> excluded, HashSet<string> included)
         {
             this.excluded = excluded;
+            this.included = included;
             settings = new JsonSerializerSettings
             {
                 ContractResolver = new IgnoredPropertiesResolver(excluded),
@@ -48,9 +51,15 @@ namespace Devlooped
             };
         }
 
-        public static Renderer Parse(params string[] args)
+        public static Renderer Parse(params string[] args) => Parse((IEnumerable<string>)args);
+
+        public static Renderer Parse(IEnumerable<string> args)
         {
+            var props = typeof(PathEventGridEvent).GetProperties()
+                .ToDictionary(prop => prop.Name, StringComparer.OrdinalIgnoreCase);
+
             HashSet<string> excluded;
+            var included = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
             if (!args.Any(s => "+all".Equals(s, StringComparison.OrdinalIgnoreCase)))
                 excluded = DefaultExcluded;
@@ -61,7 +70,11 @@ namespace Devlooped
                 .Where(x => x.StartsWith('+'))
                 .Select(s => s.TrimStart('+').Split(new[] { ':', '=' })))
             {
-                excluded.Remove(include[0]);
+                excluded.Remove(include[0].Trim());
+                if (props.TryGetValue(include[0].Trim(), out var prop))
+                    included.Add(prop.Name);
+                else
+                    included.Add(include[0].Trim());
             }
 
             foreach (var exclude in args
@@ -69,11 +82,18 @@ namespace Devlooped
                 .Select(s => s.TrimStart('-'))
                 .Where(s => s.Length > 0))
             {
-                excluded.Add(exclude);
+                if (props.TryGetValue(exclude.Trim(), out var prop))
+                    excluded.Add(prop.Name);
+                else
+                    excluded.Add(exclude);
             }
 
-            return new Renderer(excluded);
+            return new Renderer(excluded, included);
         }
+
+        public override string ToString() => @$"Rendering with:
+{'\t'}Include: {string.Join(", ", included)}
+{'\t'}Exclude: {string.Join(", ", excluded)}";
 
         public string Render(PathEventGridEvent e)
         {
