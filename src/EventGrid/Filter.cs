@@ -26,7 +26,7 @@ namespace Devlooped
 
             foreach (var filter in args
                 .Where(x => x.StartsWith('+'))
-                .Select(s => s.TrimStart('+').Split(new [] { ':', '=' }))
+                .Select(s => s.TrimStart('+').Split(new[] { ':', '=' }))
                 .Where(pair => pair.Length == 2))
             {
                 if (!props.TryGetValue(filter[0], out var prop))
@@ -71,8 +71,8 @@ namespace Devlooped
 
         public bool ShouldInclude(PathEventGridEvent e) => filters.All(x => x.Invoke(e));
 
-        public override string ToString() => filterArgs.Count == 0 ? 
-            "Filtering for: all" : 
+        public override string ToString() => filterArgs.Count == 0 ?
+            "Filtering for: all" :
             "Filtering for: " + Environment.NewLine + "\t" + string.Join(Environment.NewLine + "\t", filterArgs);
 
         bool Matches(string property, string value) => matchers.GetOrAdd(property, _ => new List<Minimatcher>()).Any(m => m.IsMatch(value));

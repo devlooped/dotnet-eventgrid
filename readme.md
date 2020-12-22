@@ -1,5 +1,4 @@
-﻿![Icon](https://raw.github.com/kzu/dotnet-eventgrid/master/img/32.png) EventGrid Tool
-============
+﻿<h1 id="dotnet-eventgrid"><img src="https://raw.githubusercontent.com/devlooped/dotnet-eventgrid/main/img/icon.svg" alt="icon" height="36" width="36" style="vertical-align: text-top; border: 0px; padding: 0px; margin: 0px">  dotnet-eventgrid</h1>
 
 An Azure Function app with an EventGrid-trigger function that forwards events 
 to an Azure SignalR service, and an accompanying `dotnet` global tool to 
@@ -12,9 +11,9 @@ connect to it and receive the streaming events in real-time.
 I find the [Azure EventGrid Viewer](https://github.com/Azure-Samples/azure-event-grid-viewer) 
 quite lacking and stagnating, it's [just a sample after all](https://docs.microsoft.com/en-us/samples/azure-samples/azure-event-grid-viewer/azure-event-grid-viewer/).
 Also, I'm much more into [dotnet global tools](https://docs.microsoft.com/en-us/dotnet/core/tools/global-tools) 
-than web pages, having created a bunch of others like [dotnet-vs](https://github.com/kzu/dotnet-vs), 
-[guit](https://github.com/kzu/guit), [dotnet-file](https://github.com/kzu/dotnet-file) and 
-[dotnet-config](https://github.com/kzu/dotnet-config) ¯\_(ツ)_/¯
+than web pages, having created a bunch of others like [dotnet-vs](https://github.com/devlooped/dotnet-vs), 
+[guit](https://github.com/devlooped/guit), [dotnet-file](https://github.com/devlooped/dotnet-file) and 
+[dotnet-config](https://github.com/devlooped/dotnet-config) ¯\_(ツ)_/¯
 
 ## Deploy
 
@@ -97,16 +96,16 @@ Usage: eventgrid [url] -[property]* +[property[=minimatch]]*
 
 Examples:
 - Include all event properties, for topic ending in 'System'
-      eventstream https://mygrid.com +all +topic=**/System
+      eventgrid https://mygrid.com +all +topic=**/System
 
 - Exclude data property and filter for specific event types
-      eventstream https://mygrid.com -data +eventType=Login
+      eventgrid https://mygrid.com -data +eventType=Login
 
 - Filter using synthetized path property '{domain}/{topic}/{subject}/{eventType}'
-      eventstream https://mygrid.com +path=MyApp/**/Login
+      eventgrid https://mygrid.com +path=MyApp/**/Login
 
 - Filter using synthetized path property for a specific event and user (subject)
-      eventstream https://mygrid.com +path=MyApp/*/1bQUI/Login
+      eventgrid https://mygrid.com +path=MyApp/*/1bQUI/Login
 ```
 
 *eventgrid* also supports [.netconfig](https://dotnetconfig.org) for configuring 
@@ -183,3 +182,13 @@ using (var client = new EventGridClient(credentials))
 ```
 
 The above was pretty much what we used to create the animated gif at the top.
+
+
+
+## Sponsors
+
+<h3 style="vertical-align: text-top" id="by-clarius">
+<img src="https://raw.githubusercontent.com/devlooped/oss/main/assets/images/sponsors.svg" alt="sponsors" height="36" width="36" style="vertical-align: text-top; border: 0px; padding: 0px; margin: 0px">&nbsp;&nbsp;by&nbsp;<a href="https://github.com/clarius">@clarius</a>&nbsp;<img src="https://raw.githubusercontent.com/clarius/branding/main/logo/logo.svg" alt="sponsors" height="36" width="36" style="vertical-align: text-top; border: 0px; padding: 0px; margin: 0px">
+</h3>
+
+*[get mentioned here too](https://github.com/sponsors/devlooped)!*

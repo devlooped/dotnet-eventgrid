@@ -47,9 +47,9 @@ namespace Devlooped
                 argList.Add("-" + exclude.RawValue!.TrimStart('-'));
             }
 
-            if ((args.Length == 0 && url == null) || 
-                args[0] == "-?" || 
-                args[0] == "-h" || 
+            if ((args.Length == 0 && url == null) ||
+                args[0] == "-?" ||
+                args[0] == "-h" ||
                 args[0] == "--help")
             {
                 Console.WriteLine("Usage: eventgrid [url] -[property]* +[property[=minimatch]]*");
@@ -60,16 +60,16 @@ namespace Devlooped
                 Console.WriteLine();
                 Console.WriteLine("Examples:");
                 Console.WriteLine("- Include all event properties, for topic ending in 'System'");
-                Console.WriteLine("      eventstream https://mygrid.com +all +topic=**/System");
+                Console.WriteLine("      eventgrid https://mygrid.com +all +topic=**/System");
                 Console.WriteLine();
                 Console.WriteLine("- Exclude data property and filter for specific event types");
-                Console.WriteLine("      eventstream https://mygrid.com -data +eventType=Login");
+                Console.WriteLine("      eventgrid https://mygrid.com -data +eventType=Login");
                 Console.WriteLine();
                 Console.WriteLine("- Filter using synthetized path property '{domain}/{topic}/{subject}/{eventType}'");
-                Console.WriteLine("      eventstream https://mygrid.com +path=MyApp/**/Login");
+                Console.WriteLine("      eventgrid https://mygrid.com +path=MyApp/**/Login");
                 Console.WriteLine();
                 Console.WriteLine("- Filter using synthetized path property for a specific event and user (subject)");
-                Console.WriteLine("      eventstream https://mygrid.com +path=MyApp/*/1bQUI/Login");
+                Console.WriteLine("      eventgrid https://mygrid.com +path=MyApp/*/1bQUI/Login");
                 Console.WriteLine();
                 Console.WriteLine("Note: all matches are case insensitive");
                 return 0;
@@ -118,7 +118,7 @@ namespace Devlooped
                     if (filter.ShouldInclude(evt))
                         logger.Information("{event}", renderer.Render(evt));
                 }
-                catch 
+                catch
                 {
                     logger.Information("{event}", e);
                 }

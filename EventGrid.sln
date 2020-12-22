@@ -5,18 +5,9 @@ VisualStudioVersion = 16.0.30223.230
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FunctionApp", "src\FunctionApp\FunctionApp.csproj", "{31A734EB-A1A8-4303-9C6E-8FA70C1DF2D9}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D93CB1D1-A9F1-42E5-AB7F-DE61B2C7DBC8}"
-	ProjectSection(SolutionItems) = preProject
-		azure-pipelines.yml = azure-pipelines.yml
-		src\Directory.Build.props = src\Directory.Build.props
-		src\Directory.Build.targets = src\Directory.Build.targets
-		src\NuGet.Config = src\NuGet.Config
-		README.md = README.md
-	EndProjectSection
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventGrid", "src\EventGrid\EventGrid.csproj", "{FBF0C13C-2825-4C4A-9C30-2377FA20FB36}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventGrid.Tests", "src\EventGrid.Tests\EventGrid.Tests.csproj", "{F352E494-E69A-4E1A-80AF-47A19A7C8223}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventGrid.Tests", "src\EventGrid.Tests\EventGrid.Tests.csproj", "{F352E494-E69A-4E1A-80AF-47A19A7C8223}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

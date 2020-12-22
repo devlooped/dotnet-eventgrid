@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "EventStream.Tool": {
+    "eventgrid": {
       "commandName": "Project",
       "commandLineArgs": "http://localhost:7071/?accessKey=42"
     }

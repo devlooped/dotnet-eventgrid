@@ -1,0 +1,7 @@
+<Project>
+
+  <PropertyGroup>
+    <PackageProjectUrl>https://clarius.org/dotnet-eventgrid</PackageProjectUrl>
+  </PropertyGroup>
+
+</Project>
