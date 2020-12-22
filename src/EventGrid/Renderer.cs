@@ -135,7 +135,7 @@ namespace Devlooped
             {
                 var property = base.CreateProperty(member, serialization);
 
-                if (ignored.Contains(property.PropertyName))
+                if (property.PropertyName != null && ignored.Contains(property.PropertyName))
                 {
                     property.ShouldSerialize = _ => false;
                     property.Ignored = true;

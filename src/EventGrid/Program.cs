@@ -115,7 +115,7 @@ namespace Devlooped
                 try
                 {
                     var evt = JsonConvert.DeserializeObject<PathEventGridEvent>(e, settings);
-                    if (filter.ShouldInclude(evt))
+                    if (evt != null && filter.ShouldInclude(evt))
                         logger.Information("{event}", renderer.Render(evt));
                 }
                 catch

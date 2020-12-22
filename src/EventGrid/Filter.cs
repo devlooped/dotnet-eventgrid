@@ -11,9 +11,9 @@ namespace Devlooped
 {
     public class Filter
     {
-        List<string> filterArgs = new List<string>();
-        List<Func<PathEventGridEvent, bool>> filters = new List<Func<PathEventGridEvent, bool>>();
-        ConcurrentDictionary<string, List<Minimatcher>> matchers = new ConcurrentDictionary<string, List<Minimatcher>>();
+        readonly List<string> filterArgs = new List<string>();
+        readonly List<Func<PathEventGridEvent, bool>> filters = new List<Func<PathEventGridEvent, bool>>();
+        readonly ConcurrentDictionary<string, List<Minimatcher>> matchers = new ConcurrentDictionary<string, List<Minimatcher>>();
 
         public static Filter Parse(IEnumerable<string> args)
         {
@@ -50,9 +50,9 @@ namespace Devlooped
 
             // Matchers are lists of filters indexed by property name, which are 
             // matched in the Matches call with Any (i.e. OR'ed)
-            foreach (var pair in matchers)
+            foreach (var (property, matcher) in matchers)
             {
-                this.matchers.GetOrAdd(pair.property.Name, _ => new List<Minimatcher>()).Add(pair.matcher);
+                this.matchers.GetOrAdd(property.Name, _ => new List<Minimatcher>()).Add(matcher);
             }
 
             // Filters are a per-property check, and are AND'ed in ShouldInclude via an All call
