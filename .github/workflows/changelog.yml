@@ -2,6 +2,7 @@
 on:
   release:
     types: [released]
+  workflow_dispatch:
 
 env:
   GH_TOKEN: ${{ secrets.GH_TOKEN }}
@@ -33,5 +34,4 @@ jobs:
           git config --local user.name github-actions
           git config --local user.email github-actions@github.com
           git add changelog.md
-          git commit -m "🖉 Update changelog with ${GITHUB_REF#refs/*/}"
-          git push
+          (git commit -m "🖉 Update changelog with ${GITHUB_REF#refs/*/}" && git push) || echo "Done"
