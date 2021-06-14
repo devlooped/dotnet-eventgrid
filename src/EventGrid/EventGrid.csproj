@@ -44,7 +44,7 @@ Examples:
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
 		<PackageReference Include="Microsoft.Azure.EventGrid" Version="3.2.0" />
 		<PackageReference Include="Minimatch" Version="2.0.0" />
-		<PackageReference Include="DotNetConfig" Version="1.0.3" />
+		<PackageReference Include="DotNetConfig" Version="1.0.4" />
 		<PackageReference Include="NETStandard.Library" Version="2.0.3" />
 	</ItemGroup>
 
