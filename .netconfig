@@ -53,9 +53,9 @@
 	sha = fc5889d5387e2d5aa7aba279b2aa12251cf08cb2
 [file ".github_changelog_generator"]
 	url = https://github.com/devlooped/oss/blob/main/.github_changelog_generator
-	etag = 115efcd056eaca2f1d2df510eb7632ac3558ace2734a4139b77536b8211dfe41
+	etag = 44dc852588ec508eaed9cefe260618eb162f0db50495188fc3c4e266b41944e2
 	weak
-	sha = cf52375fd20c6df894f1518890693312d4c4c11c
+	sha = a7ab5fe706fdfe1efb05d47d00ef4bb137088669
 [file ".gitignore"]
 	url = https://github.com/devlooped/oss/blob/main/.gitignore
 	etag = 925782b685859e07040442303b411bebd1c75b4fe4e075f547e067f33f323814
@@ -83,9 +83,9 @@
 	sha = bf7b4569981b558b130bdd3ce93043d624a567d8
 [file "assets/images/sponsors.svg"]
 	url = https://github.com/devlooped/oss/blob/main/assets/images/sponsors.svg
-	etag = 182780a2d68bdba9069000aef75712ab81c307eee1317bcd29d35563f523ba98
+	etag = d545e385f5b7db32d12a15905e0173246953cc0efdce0595a67cf9544e0a4fed
 	weak
-	sha = bf7b4569981b558b130bdd3ce93043d624a567d8
+	sha = 491c6ee4ed880dc92012dee9b1c4e7d3e9d14115
 [file "code-of-conduct.md"]
 	url = https://github.com/devlooped/oss/blob/main/code-of-conduct.md
 	etag = 4857c01bb695f09bf6912d778951c3065d9dd565e5de3d0827f40432d0e4c613
