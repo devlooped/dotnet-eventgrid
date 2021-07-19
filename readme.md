@@ -16,61 +16,6 @@ than web pages, having created a bunch of others like [dotnet-vs](https://github
 [guit](https://github.com/devlooped/guit), [dotnet-file](https://github.com/devlooped/dotnet-file) and 
 [dotnet-config](https://github.com/devlooped/dotnet-config) ¯\_(ツ)_/¯
 
-## Deploy
-
-The dotnet global tool `eventgrid` connects to a SignalR service that broadcasts events with a 
-specific format (basically, just JSON-serialized [EventGridEvent](https://docs.microsoft.com/en-us/dotnet/api/microsoft.azure.eventgrid.models.eventgridevent?view=azure-dotnet) 
-objects). In order to receive those, we need to connect an EventGrid subscription (thorugh an 
-Azure function) to SignalR. Since the resources, cost and privacy issues involved are non-trivial, 
-we don't provide a ready-made service you can just connect your EventGrid events to. 
-
-Instructions to deploy the cloud pieces on your own Azure subscription:
-
-1. The first step to getting your own event grid events routed to the tool is to 
-   set up a [Azure SignalR service](https://portal.azure.com/#create/Microsoft.SignalRGalleryPackage) if 
-   you don't have one already. There is a [free tier](https://azure.microsoft.com/en-us/pricing/details/signalr-service/) 
-   that allows 20 simulaneous connections and up to 20k messages per day.
-   Once created, open the Settings > Keys pane and copy the `Connection String`.
-
-    > ![SignalR Connection String](https://raw.githubusercontent.com/devlooped/dotnet-eventgrid/main/img/signalr.png)
-
-3. Next comes the [Function App](https://portal.azure.com/#create/Microsoft.FunctionApp). Create 
-   an empty one, using .NET Core 3.1. The simplest way to deploy the code to it is to select the 
-   `Deployment Center` pane, select `GitHub` for source control (point it to your fork of this repo) 
-   and `App Service build service` for the build provider.
-
-    > ![GitHub source control](https://raw.githubusercontent.com/devlooped/dotnet-eventgrid/main/img/github.png)
-
-    > ![App Service build service](https://raw.githubusercontent.com/devlooped/dotnet-eventgrid/main/img/kudu.png)
-
-4. Now we need to configure a couple application settings in the function app:
-   * `AzureSignalRConnectionString`: set it to the value copied in step 2.
-   * Optionally, create an `AccessKey` value with an arbitrary string to use as a shared 
-     secret to authorize connections from the client. You will need to append that key to 
-     the url passed to the `eventgrid` tool, like `eventgrid https://myfunc.azurewebsites.net/?key=...`
-
-    > ![Function App configuration](https://raw.githubusercontent.com/devlooped/dotnet-eventgrid/main/img/configuration.png)
-
-5. The final step is to start sending events to the function app just created. 
-   Go to all the relevant EventGrid services you have (or [create a new one](https://portal.azure.com/#create/Microsoft.EventGridDomain)) 
-   and set up the subscriptions to push as much or as little as you need to visualize 
-   on the tool. Keep in mind that the tool can also do filtering on the client side, 
-   so that you don't need to constantly update the subscriptions. During development, 
-   it can be convenient to just create a single global subscription with no filters 
-   and just filter on the client. Beware of the SignalR service limits for the tier 
-   you have selected, though.
-
-   You just need to create a new Event Subscription and select the `Azure Function` 
-   endpoint type, and point it to the deployed function app from step 3.
-
-    > ![New Event Subscription](https://raw.githubusercontent.com/devlooped/dotnet-eventgrid/main/img/eventgrid.png)
-
-   The function will be named `publish` once you select the right subscription, 
-   resource group and function app
-
-    > ![Subscription Endpoint](https://raw.githubusercontent.com/devlooped/dotnet-eventgrid/main/img/subscription.png)
-
-
 ## Install
 
 Now you can install the dotnet tool that connects to your cloud infrastructure:
@@ -140,6 +85,64 @@ simpler format `{domain}/{topic}/{subject}/{eventType}`, which makes filtering
 with the [minimatch](https://github.com/isaacs/minimatch) format much more 
 convenient.
 
+If you already know how to deploy an Azure SignalR service, you can safely 
+skip the following section.
+
+## Deploy
+
+The dotnet global tool `eventgrid` connects to a SignalR service that broadcasts events with a 
+specific format (basically, just JSON-serialized [EventGridEvent](https://docs.microsoft.com/en-us/dotnet/api/microsoft.azure.eventgrid.models.eventgridevent?view=azure-dotnet) 
+objects). In order to receive those, we need to connect an EventGrid subscription (thorugh an 
+Azure function) to SignalR. Since the resources, cost and privacy issues involved are non-trivial, 
+we don't provide a ready-made service you can just connect your EventGrid events to. 
+
+Instructions to deploy the cloud pieces on your own Azure subscription:
+
+1. The first step to getting your own event grid events routed to the tool is to 
+   set up a [Azure SignalR service](https://portal.azure.com/#create/Microsoft.SignalRGalleryPackage) if 
+   you don't have one already. There is a [free tier](https://azure.microsoft.com/en-us/pricing/details/signalr-service/) 
+   that allows 20 simulaneous connections and up to 20k messages per day.
+   Once created, open the Settings > Keys pane and copy the `Connection String`.
+
+    > ![SignalR Connection String](https://raw.githubusercontent.com/devlooped/dotnet-eventgrid/main/img/signalr.png)
+
+3. Next comes the [Function App](https://portal.azure.com/#create/Microsoft.FunctionApp). Create 
+   an empty one, using .NET Core 3.1. The simplest way to deploy the code to it is to select the 
+   `Deployment Center` pane, select `GitHub` for source control (point it to your fork of this repo) 
+   and `App Service build service` for the build provider.
+
+    > ![GitHub source control](https://raw.githubusercontent.com/devlooped/dotnet-eventgrid/main/img/github.png)
+
+    > ![App Service build service](https://raw.githubusercontent.com/devlooped/dotnet-eventgrid/main/img/kudu.png)
+
+4. Now we need to configure a couple application settings in the function app:
+   * `AzureSignalRConnectionString`: set it to the value copied in step 2.
+   * Optionally, create an `AccessKey` value with an arbitrary string to use as a shared 
+     secret to authorize connections from the client. You will need to append that key to 
+     the url passed to the `eventgrid` tool, like `eventgrid https://myfunc.azurewebsites.net/?key=...`
+
+    > ![Function App configuration](https://raw.githubusercontent.com/devlooped/dotnet-eventgrid/main/img/configuration.png)
+
+5. The final step is to start sending events to the function app just created. 
+   Go to all the relevant EventGrid services you have (or [create a new one](https://portal.azure.com/#create/Microsoft.EventGridDomain)) 
+   and set up the subscriptions to push as much or as little as you need to visualize 
+   on the tool. Keep in mind that the tool can also do filtering on the client side, 
+   so that you don't need to constantly update the subscriptions. During development, 
+   it can be convenient to just create a single global subscription with no filters 
+   and just filter on the client. Beware of the SignalR service limits for the tier 
+   you have selected, though.
+
+   You just need to create a new Event Subscription and select the `Azure Function` 
+   endpoint type, and point it to the deployed function app from step 3.
+
+    > ![New Event Subscription](https://raw.githubusercontent.com/devlooped/dotnet-eventgrid/main/img/eventgrid.png)
+
+   The function will be named `publish` once you select the right subscription, 
+   resource group and function app
+
+    > ![Subscription Endpoint](https://raw.githubusercontent.com/devlooped/dotnet-eventgrid/main/img/subscription.png)
+
+
 ## Testing events
 
 Pushing test events to EventGrid is quite simple. Provided you have a package 
@@ -183,7 +186,6 @@ using (var client = new EventGridClient(credentials))
 ```
 
 The above was pretty much what we used to create the animated gif at the top.
-
 
 
 ## Sponsors
