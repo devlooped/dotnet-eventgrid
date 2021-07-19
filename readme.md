@@ -1,10 +1,11 @@
-﻿<h1 id="dotnet-eventgrid"><img src="https://raw.githubusercontent.com/devlooped/dotnet-eventgrid/main/img/icon.svg" alt="icon" height="36" width="36" style="vertical-align: text-top; border: 0px; padding: 0px; margin: 0px">  dotnet-eventgrid</h1>
+﻿![Icon](https://raw.githubusercontent.com/devlooped/dotnet-eventgrid/main/img/icon-32.png) dotnet-eventgrid
+============
 
 An Azure Function app with an EventGrid-trigger function that forwards events 
 to an Azure SignalR service, and an accompanying `dotnet` global tool to 
 connect to it and receive the streaming events in real-time.
 
-![EventGrid tool in action](img/eventgrid.gif)
+![EventGrid tool in action](https://raw.githubusercontent.com/devlooped/dotnet-eventgrid/main/img/eventgrid.gif)
 
 ## Why
 
@@ -31,16 +32,16 @@ Instructions to deploy the cloud pieces on your own Azure subscription:
    that allows 20 simulaneous connections and up to 20k messages per day.
    Once created, open the Settings > Keys pane and copy the `Connection String`.
 
-    > ![SignalR Connection String](img/signalr.png)
+    > ![SignalR Connection String](https://raw.githubusercontent.com/devlooped/dotnet-eventgrid/main/img/signalr.png)
 
 3. Next comes the [Function App](https://portal.azure.com/#create/Microsoft.FunctionApp). Create 
    an empty one, using .NET Core 3.1. The simplest way to deploy the code to it is to select the 
    `Deployment Center` pane, select `GitHub` for source control (point it to your fork of this repo) 
    and `App Service build service` for the build provider.
 
-    > ![GitHub source control](img/github.png)
+    > ![GitHub source control](https://raw.githubusercontent.com/devlooped/dotnet-eventgrid/main/img/github.png)
 
-    > ![App Service build service](img/kudu.png)
+    > ![App Service build service](https://raw.githubusercontent.com/devlooped/dotnet-eventgrid/main/img/kudu.png)
 
 4. Now we need to configure a couple application settings in the function app:
    * `AzureSignalRConnectionString`: set it to the value copied in step 2.
@@ -48,7 +49,7 @@ Instructions to deploy the cloud pieces on your own Azure subscription:
      secret to authorize connections from the client. You will need to append that key to 
      the url passed to the `eventgrid` tool, like `eventgrid https://myfunc.azurewebsites.net/?key=...`
 
-    > ![Function App configuration](img/configuration.png)
+    > ![Function App configuration](https://raw.githubusercontent.com/devlooped/dotnet-eventgrid/main/img/configuration.png)
 
 5. The final step is to start sending events to the function app just created. 
    Go to all the relevant EventGrid services you have (or [create a new one](https://portal.azure.com/#create/Microsoft.EventGridDomain)) 
@@ -62,12 +63,12 @@ Instructions to deploy the cloud pieces on your own Azure subscription:
    You just need to create a new Event Subscription and select the `Azure Function` 
    endpoint type, and point it to the deployed function app from step 3.
 
-    > ![New Event Subscription](img/eventgrid.png)
+    > ![New Event Subscription](https://raw.githubusercontent.com/devlooped/dotnet-eventgrid/main/img/eventgrid.png)
 
    The function will be named `publish` once you select the right subscription, 
    resource group and function app
 
-    > ![Subscription Endpoint](img/subscription.png)
+    > ![Subscription Endpoint](https://raw.githubusercontent.com/devlooped/dotnet-eventgrid/main/img/subscription.png)
 
 
 ## Install
@@ -143,8 +144,8 @@ convenient.
 
 Pushing test events to EventGrid is quite simple. Provided you have a package 
 reference to `Microsoft.Azure.EventGrid`, you can use the following snippet 
-of C# (for example in the most excelent [LINQPad](https://www.linqpad.net/) tool) 
-to push some events:
+of C# (for example in the most excelent [LINQPad](https://www.linqpad.net/) tool, 
+or in a simple top-level C# 9 program) to push some events:
 
 ```csharp
 var domain = "YOUR_EVENT_GRID_DOMAIN_ENDPOINT_HOSTNAME";                // From the Overview pane
@@ -187,8 +188,6 @@ The above was pretty much what we used to create the animated gif at the top.
 
 ## Sponsors
 
-<h3 style="vertical-align: text-top" id="by-clarius">
-<img src="https://raw.githubusercontent.com/devlooped/oss/main/assets/images/sponsors.svg" alt="sponsors" height="36" width="36" style="vertical-align: text-top; border: 0px; padding: 0px; margin: 0px">&nbsp;&nbsp;by&nbsp;<a href="https://github.com/clarius">@clarius</a>&nbsp;<img src="https://raw.githubusercontent.com/clarius/branding/main/logo/logo.svg" alt="sponsors" height="36" width="36" style="vertical-align: text-top; border: 0px; padding: 0px; margin: 0px">
-</h3>
+[![sponsored](https://raw.githubusercontent.com/devlooped/oss/main/assets/images/sponsors.svg)](https://github.com/sponsors/devlooped) [![clarius](https://raw.githubusercontent.com/clarius/branding/main/logo/byclarius.svg)](https://github.com/clarius)[![clarius](https://raw.githubusercontent.com/clarius/branding/main/logo/logo.svg)](https://github.com/clarius)
 
 *[get mentioned here too](https://github.com/sponsors/devlooped)!*
