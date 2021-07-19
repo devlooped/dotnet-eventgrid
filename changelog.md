@@ -1,8 +1,8 @@
 
 
-## [v1.0.0-alpha](https://github.com/devlooped/dotnet-eventgrid/tree/v1.0.0-alpha) (2021-07-19)
+## [v1.0.0](https://github.com/devlooped/dotnet-eventgrid/tree/v1.0.0) (2021-07-19)
 
-[Full Changelog](https://github.com/devlooped/dotnet-eventgrid/compare/fe5342e3d19d0b6b2faacaca4f4da260f0333167...v1.0.0-alpha)
+[Full Changelog](https://github.com/devlooped/dotnet-eventgrid/compare/fe5342e3d19d0b6b2faacaca4f4da260f0333167...v1.0.0)
 
 :sparkles: Implemented enhancements:
 
