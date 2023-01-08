@@ -2,7 +2,7 @@
 
   <PropertyGroup Label="Build">
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <AssemblyName>eventgrid</AssemblyName>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
   </PropertyGroup>
