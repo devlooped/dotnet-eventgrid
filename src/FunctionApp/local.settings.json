@@ -2,6 +2,7 @@
   "IsEncrypted": false,
   "Values": {
     "AccessKey": "42",
+    "AZURE_FUNCTIONS_ENVIRONMENT": "Development",
     "FUNCTIONS_WORKER_RUNTIME": "dotnet",
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "AzureSignalRConnectionString": "Endpoint=https://eventgrid.service.signalr.net;AccessKey=IrmzSjvAzz3HH/tv1VPAop55wqhAX+oNjlZyWgIVQa0=;Version=1.0;"
