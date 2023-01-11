@@ -85,7 +85,9 @@ arguments:
 The `url` is the address of your deployed function app, which can optionally 
 have an `?key=[access-key]` query string with the same value specified in the 
 Function App configuration settings with the name `AccessKey`. If present, it 
-will be used as a shared secret to authorize the SignalR stream connection.
+will be used as a shared secret to authorize the SignalR stream connection. 
+It's passed as the `X-Authorization` custom header and checked by the function 
+during SignalR connection negotiation.
 
 Keep in mind that the built-in EventGrid format for `topic` is rather unwieldy: 
 `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}/topics/{topicName}`. 

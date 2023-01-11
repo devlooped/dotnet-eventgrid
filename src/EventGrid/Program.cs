@@ -93,17 +93,26 @@ class Program
         if (Uri.TryCreate(args[0], UriKind.Absolute, out var uri))
             url = args[0];
 
-        if (url == null)
+        if (url == null || !Uri.TryCreate(url, UriKind.Absolute, out uri))
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("Valid Url must be provided via command line arguments or .netconfig");
             return -1;
         }
 
-        var connection = new HubConnectionBuilder()
-            .WithUrl(url)
-            .WithAutomaticReconnect()
-            .Build();
+        // Remove key query arg from URL, pass it as header
+        url = uri.GetComponents(UriComponents.SchemeAndServer | UriComponents.Path, UriFormat.Unescaped);
+        var key = uri.Query.TrimStart('?').Split('&').FirstOrDefault(x => x.StartsWith("key="))?[4..];
+
+        var builder = new HubConnectionBuilder()
+            .WithAutomaticReconnect();
+
+        if (!string.IsNullOrEmpty(key))
+            builder = builder.WithUrl(url, c => c.Headers.Add("X-Authorization", key));
+        else
+            builder = builder.WithUrl(url);
+
+        var connection = builder.Build();
 
         var logger = new LoggerConfiguration()
             .MinimumLevel.Information()
@@ -129,17 +138,19 @@ class Program
             }
         });
 
-        try
+        while (true)
         {
-            await connection.StartAsync();
-            logger.Information("Connected");
-            Console.ReadLine();
-            return 0;
-        }
-        catch (Exception e)
-        {
-            logger.Error(e, "Error: {Error}");
-            return 0;
+            try
+            {
+                await connection.StartAsync();
+                logger.Information("Connected");
+                Console.ReadLine();
+                return 0;
+            }
+            catch (Exception e)
+            {
+                logger.Error(e, "Error: {Error}");
+            }
         }
     }
 }
