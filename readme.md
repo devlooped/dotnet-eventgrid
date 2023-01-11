@@ -143,6 +143,11 @@ Instructions to deploy the cloud pieces on your own Azure subscription:
     > ![Subscription Endpoint](https://raw.githubusercontent.com/devlooped/dotnet-eventgrid/main/img/subscription.png)
 
 
+### Local Development
+
+When running the function app locally, use [dotnet user-secrets](https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-7.0&tabs=windows#set-a-secret) 
+to set the `AzureSignalRConnectionString` and (optional) `AccessKey` values.
+
 ## Testing events
 
 Pushing test events to EventGrid is quite simple. Provided you have a package 

@@ -5,15 +5,26 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.EventGrid.Models;
+using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.EventGrid;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Extensions.SignalRService;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Primitives;
+using Microsoft.WindowsAzure.Storage;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace Devlooped;
+[assembly: FunctionsStartup(typeof(Startup))]
+
+public class Startup : FunctionsStartup
+{
+    public override void Configure(IFunctionsHostBuilder builder) { }
+    
+    public override void ConfigureAppConfiguration(IFunctionsConfigurationBuilder builder)
+        => builder.ConfigurationBuilder.AddUserSecrets(ThisAssembly.Project.UserSecretsId);
+}
 
 public class Functions
 {
