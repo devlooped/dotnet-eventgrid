@@ -102,7 +102,8 @@ Instructions to deploy the cloud pieces on your own Azure subscription:
    set up a [Azure SignalR service](https://portal.azure.com/#create/Microsoft.SignalRGalleryPackage) if 
    you don't have one already. There is a [free tier](https://azure.microsoft.com/en-us/pricing/details/signalr-service/) 
    that allows 20 simulaneous connections and up to 20k messages per day.
-   Once created, open the Settings > Keys pane and copy the `Connection String`.
+   Once created, open the Settings > Keys pane and copy the `Connection String`. 
+   Make sure you pick `Serverless` for the service mode.
 
     > ![SignalR Connection String](https://raw.githubusercontent.com/devlooped/dotnet-eventgrid/main/img/signalr.png)
 
