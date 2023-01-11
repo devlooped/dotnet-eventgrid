@@ -56,6 +56,8 @@ public class Functions
             accessKey = req.Query["key"];
         if (StringValues.IsNullOrEmpty(accessKey))
             accessKey = req.Query["k"];
+        if (StringValues.IsNullOrEmpty(accessKey))
+            accessKey = req.Headers["X-Authorization"];
 
         if (StringValues.IsNullOrEmpty(accessKey) ||
             !StringValues.Equals(expectedKey, accessKey))
