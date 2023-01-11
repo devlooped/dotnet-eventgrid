@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -12,7 +11,6 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Extensions.SignalRService;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Primitives;
-using Microsoft.WindowsAzure.Storage;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -21,7 +19,7 @@ using Newtonsoft.Json.Converters;
 public class Startup : FunctionsStartup
 {
     public override void Configure(IFunctionsHostBuilder builder) { }
-    
+
     public override void ConfigureAppConfiguration(IFunctionsConfigurationBuilder builder)
         => builder.ConfigurationBuilder.AddUserSecrets(ThisAssembly.Project.UserSecretsId);
 }
