@@ -2,7 +2,7 @@
   "profiles": {
     "eventgrid": {
       "commandName": "Project",
-      "commandLineArgs": "http://localhost:7071/?accessKey=42"
+      "commandLineArgs": "-?"
     }
   }
 }

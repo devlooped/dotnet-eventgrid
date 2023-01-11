@@ -4,7 +4,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
     <AssemblyName>eventgrid</AssemblyName>
-    <PackageReadmeFile>readme.md</PackageReadmeFile>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Label="NuGet">
@@ -21,18 +21,20 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\..\readme.md" PackagePath="readme.md" Pack="true" />
+    <PackageReference Include="CliWrap" Version="3.6.0" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.13" />
+    <PackageReference Include="NuGetizer" Version="0.9.1" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+    <PackageReference Include="Microsoft.Azure.EventGrid" Version="3.2.1" />
+    <PackageReference Include="Minimatch" Version="2.0.0" />
+    <PackageReference Include="DotNetConfig" Version="1.0.6" />
+    <PackageReference Include="NETStandard.Library" Version="2.0.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="5.0.7" />
-    <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="Microsoft.Azure.EventGrid" Version="3.2.1" />
-    <PackageReference Include="Minimatch" Version="2.0.0" />
-    <PackageReference Include="DotNetConfig" Version="1.0.4" />
-    <PackageReference Include="NETStandard.Library" Version="2.0.3" />
+    <None Update="runtime/**/*.*" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

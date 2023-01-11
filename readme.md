@@ -30,7 +30,7 @@ Update:
 dotnet tool update -g dotnet-eventgrid
 ```
 
-
+<!-- #tool -->
 ## Usage
 
 ```
@@ -39,6 +39,9 @@ Usage: eventgrid [url] -[property]* +[property[=minimatch]]*
       -property               Exclude a property
       +property[=minimatch]   Include a property, optionally filtering
                               with the given the minimatch expression.
+      jq=expression           When rendering event data containing JSON,
+                              apply the given JQ expression. Learn more at
+                              https://stedolan.github.io/jq/
 
 Examples:
 - Include all event properties, for topic ending in 'System'
@@ -52,6 +55,9 @@ Examples:
 
 - Filter using synthetized path property for a specific event and user (subject)
       eventgrid https://mygrid.com +path=MyApp/*/1bQUI/Login
+
+- Render sponsorship action, sponsorable login and sponsor login from GH webhook JSON event data:
+      eventgrid https://mygrid.com jq="{ action: .action, sponsorable: .sponsorship.sponsorable.login, sponsor: .sponsorship.sponsor.login }"
 ```
 
 *eventgrid* also supports [.netconfig](https://dotnetconfig.org) for configuring 
@@ -71,6 +77,9 @@ arguments:
 
     # properties to exclude from event rendering
     exclude = data
+
+    # apply jq when rendering JSON data payloads
+    jq = "{ action: .action, sponsor: .sponsorship.sponsor.login }"
 ```
 
 The `url` is the address of your deployed function app, which can optionally 
@@ -84,6 +93,8 @@ For this reason, we also provide a synthetized `path` property with the much
 simpler format `{domain}/{topic}/{subject}/{eventType}`, which makes filtering 
 with the [minimatch](https://github.com/isaacs/minimatch) format much more 
 convenient.
+
+<!-- #tool -->
 
 If you already know how to deploy an Azure SignalR service, you can safely 
 skip the following section.
