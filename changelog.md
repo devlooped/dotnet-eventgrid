@@ -1,5 +1,13 @@
 # Changelog
 
+## [v1.1.1](https://github.com/devlooped/dotnet-eventgrid/tree/v1.1.1) (2023-01-11)
+
+[Full Changelog](https://github.com/devlooped/dotnet-eventgrid/compare/v1.1.0...v1.1.1)
+
+:sparkles: Implemented enhancements:
+
+- Pass optional access key as a header value [\#64](https://github.com/devlooped/dotnet-eventgrid/pull/64) (@kzu)
+
 ## [v1.1.0](https://github.com/devlooped/dotnet-eventgrid/tree/v1.1.0) (2023-01-11)
 
 [Full Changelog](https://github.com/devlooped/dotnet-eventgrid/compare/v1.0.0...v1.1.0)
