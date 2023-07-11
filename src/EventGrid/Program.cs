@@ -55,10 +55,11 @@ class Program
             args[0] == "--help")
         {
             Console.WriteLine("Usage: eventgrid [url] -[property]* +[property[=minimatch]]* [jq=expression]");
+            Console.WriteLine("      url                     Address of deployed functions app. Append ?key=[AccesKey] for auth");
             Console.WriteLine("      +all                    Render all properties");
             Console.WriteLine("      -property               Exclude a property");
             Console.WriteLine("      +property[=minimatch]   Include a property, optionally filtering ");
-            Console.WriteLine("                              with the given the minimatch expression.");
+            Console.WriteLine("                              with the given the minimatch expression");
             Console.WriteLine("      jq=expression           When rendering event data containing JSON, ");
             Console.WriteLine("                              apply the given JQ expression. Learn more at ");
             Console.WriteLine("                              https://stedolan.github.io/jq/");
