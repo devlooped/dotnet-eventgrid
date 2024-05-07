@@ -1,6 +1,10 @@
 ![Icon](https://raw.githubusercontent.com/devlooped/dotnet-eventgrid/main/img/icon-32.png) dotnet-eventgrid
 ============
 
+[![Version](https://img.shields.io/nuget/v/dotnet-eventgrid.svg?color=royalblue)](https://www.nuget.org/packages/dotnet-eventgrid)
+[![Downloads](https://img.shields.io/nuget/dt/dotnet-eventgrid.svg?color=darkmagenta)](https://www.nuget.org/packages/dotnet-eventgrid)
+[![License](https://img.shields.io/github/license/devlooped/dotnet-eventgrid.svg?color=blue)](https://github.com/devlooped/dotnet-eventgrid/blob/main/LICENSE)
+
 An Azure Function app with an EventGrid-trigger function that forwards events 
 to an Azure SignalR service, and an accompanying `dotnet` global tool to 
 connect to it and receive the streaming events in real-time.
@@ -13,7 +17,7 @@ I find the [Azure EventGrid Viewer](https://github.com/Azure-Samples/azure-event
 quite lacking and stagnating, it's [just a sample after all](https://docs.microsoft.com/en-us/samples/azure-samples/azure-event-grid-viewer/azure-event-grid-viewer/).
 Also, I'm much more into [dotnet global tools](https://docs.microsoft.com/en-us/dotnet/core/tools/global-tools) 
 than web pages, having created a bunch of others like [dotnet-vs](https://github.com/devlooped/dotnet-vs), 
-[guit](https://github.com/devlooped/guit), [dotnet-file](https://github.com/devlooped/dotnet-file) and 
+[guit](https://github.com/devlooped/guit), [dotnet-eventgrid](https://github.com/devlooped/dotnet-eventgrid) and 
 [dotnet-config](https://github.com/devlooped/dotnet-config) ¯\_(ツ)_/¯
 
 ## Install
@@ -31,6 +35,11 @@ dotnet tool update -g dotnet-eventgrid
 ```
 
 <!-- #tool -->
+
+This tool provides a real-time view of Azure EventGrid events, by connecting to an Azure SignalR 
+service through an Azure Function app. The function app is triggered by EventGrid events and forwards 
+them to the SignalR service, which the tool connects to and receives the events in real-time.
+
 ## Usage
 
 ```
